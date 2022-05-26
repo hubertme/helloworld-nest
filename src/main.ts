@@ -6,6 +6,11 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     AppConfig.init(app);
     
-    await app.listen(process.env.PORT);
+    const port = process.env.PORT;
+    await app.listen(port, '0.0.0.0', () => {
+        if (!AppConfig.isProduction) {
+            console.log('Running on PORT:', port);
+        }
+    });
 }
 bootstrap();
